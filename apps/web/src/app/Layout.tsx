@@ -114,10 +114,10 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
                     </p>
                 )}
                 <div className="flex items-center gap-1">
-                    <div className="min-w-0 flex-1 px-1">
+                    <Link to={`/s/${sid}/settings/account`} title="Minha conta" className="min-w-0 flex-1 rounded px-1 hover:bg-subtle">
                         <p className="truncate text-[13px] font-medium">{me.data?.name || me.data?.email}</p>
                         <p className="truncate text-[11.5px] text-muted">{me.data?.role === "admin" ? "Administrador" : "Membro"}</p>
-                    </div>
+                    </Link>
                     <ThemeToggle />
                     <IconButton title="Sair" onClick={logout}><LogOut className="h-4 w-4" /></IconButton>
                 </div>

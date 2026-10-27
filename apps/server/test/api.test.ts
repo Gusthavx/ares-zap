@@ -48,6 +48,18 @@ d("API", () => {
         expect((await call("GET", "/api/auth/me")).body.user.email).toBe("admin@teste.local");
     });
 
+    it("minha conta: troca nome e e-mail só com a senha atual; e-mail repetido 409", async () => {
+        expect((await call("PATCH", "/api/auth/me", { email: "novo@teste.local", current: "errada" })).status).toBe(400);
+        const ok = await call("PATCH", "/api/auth/me", { name: "Dono", email: "Novo@Teste.local", current: "senha-forte-123" });
+        expect(ok.status).toBe(200);
+        expect(ok.body.user).toMatchObject({ name: "Dono", email: "novo@teste.local" });
+        await h.sql`insert into users (email, name, password_hash, role) values ('outro@teste.local', 'Outro', 'x', 'member')`;
+        expect((await call("PATCH", "/api/auth/me", { email: "outro@teste.local", current: "senha-forte-123" })).status).toBe(409);
+        await h.sql`delete from users where email = 'outro@teste.local'`;
+        expect((await call("POST", "/api/auth/login", { email: "novo@teste.local", password: "senha-forte-123" })).status).toBe(200);
+        await call("PATCH", "/api/auth/me", { name: "Admin", email: "admin@teste.local", current: "senha-forte-123" });
+    });
+
     it("sessão: cria, configura (validado) e não expõe segredo", async () => {
         const r = await call("POST", "/api/sessions", { name: "Número 1" });
         expect(r.status).toBe(200);

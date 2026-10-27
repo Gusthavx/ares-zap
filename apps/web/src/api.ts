@@ -156,6 +156,7 @@ export const api = {
             try { return (await get<{ user: User }>("/auth/me")).user; } catch (e) { if (e instanceof ApiError && e.status === 401) return null; throw e; }
         },
         password: (current: string, next: string) => post<Ok>("/auth/password", { current, next }),
+        profile: (b: { name?: string; email?: string; current: string }) => patch<{ user: User }>("/auth/me", b),
     },
     sessions: {
         list: () => get<Session[]>("/sessions"),

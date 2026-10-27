@@ -38,6 +38,27 @@ const routes: FastifyPluginAsync = async app => {
         await sql`update users set password_hash = ${await bcrypt.hash(b.next, 12)} where id = ${u.id}`;
         return { ok: true };
     });
+
+    // nome e e-mail; pede a senha atual porque o e-mail é o login
+    app.patch("/me", { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } }, async req => {
+        const u = requireUser(req);
+        const b = parse(z.object({
+            name: z.string().trim().max(80).optional(),
+            email: z.email("E-mail inválido").trim().toLowerCase().optional(),
+            current: z.string().min(1, "Confirme com a senha atual"),
+        }), req.body);
+        const [row] = await sql`select password_hash from users where id = ${u.id}`;
+        if (!row || !(await bcrypt.compare(b.current, row.password_hash))) throw new HttpError(400, "Senha atual incorreta");
+        try {
+            const [n] = await sql`
+                update users set name = coalesce(${b.name ?? null}, name), email = coalesce(${b.email ?? null}, email)
+                where id = ${u.id} returning id, email, name, role`;
+            return { user: { id: n.id, email: n.email, name: n.name, role: n.role } };
+        } catch (e) {
+            if ((e as { code?: string }).code === "23505") throw new HttpError(409, "Esse e-mail já está em uso");
+            throw e;
+        }
+    });
 };
 
 export default routes;

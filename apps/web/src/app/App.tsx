@@ -14,6 +14,7 @@ import { BroadcastDetail } from "@/features/broadcasts/BroadcastDetail";
 import { ContactsPage } from "@/features/contacts/ContactsPage";
 import { SettingsPage } from "@/features/settings/SettingsPage";
 import { SessionsOnboarding } from "@/features/sessions/SessionsOnboarding";
+import { AccountPage } from "@/features/settings/AccountPage";
 
 // O editor carrega o React Flow: fica num pedaço separado.
 const FlowEditorPage = lazy(() => import("@/features/flows/editor/FlowEditorPage"));
@@ -44,6 +45,7 @@ export function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
             <Route path="/sessions" element={<RequireAuth><SessionsOnboarding /></RequireAuth>} />
+            <Route path="/account" element={<RequireAuth><AccountPage /></RequireAuth>} />
             <Route path="/s/:sessionId" element={<RequireAuth><Layout /></RequireAuth>}>
                 <Route index element={<Navigate to="inbox" replace />} />
                 <Route path="inbox" element={<InboxPage />} />
