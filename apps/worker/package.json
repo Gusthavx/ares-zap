@@ -1,0 +1,18 @@
+{
+  "name": "@areszap/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/main.ts",
+    "start": "node dist/main.js",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@areszap/core": "*",
+    "@areszap/db": "*",
+    "@areszap/engine": "*",
+    "baileys": "7.0.0-rc14",
+    "pino": "^10.1.0"
+  }
+}

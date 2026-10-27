@@ -1,0 +1,35 @@
+{
+  "name": "ares-zap",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Automação de WhatsApp com fluxos visuais, transmissões com fila por número e inbox. Reescrita otimizada a partir do MarcFlow (MIT).",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "npm run dev -w @areszap/server",
+    "dev:worker": "npm run dev -w @areszap/worker",
+    "dev:web": "npm run dev -w @areszap/web",
+    "db:generate": "npm run generate -w @areszap/db",
+    "db:migrate": "npm run migrate -w @areszap/db",
+    "make-admin": "npm run make-admin -w @areszap/server --",
+    "build": "npm run build -w @areszap/web && npm run build -w @areszap/server && npm run build -w @areszap/worker",
+    "start": "node scripts/start.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.0",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

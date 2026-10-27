@@ -1,0 +1,26 @@
+{
+  "name": "@areszap/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/main.ts",
+    "start": "node dist/main.js",
+    "build": "tsup",
+    "make-admin": "tsx src/make-admin.ts"
+  },
+  "dependencies": {
+    "@areszap/core": "*",
+    "@areszap/db": "*",
+    "@areszap/engine": "*",
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/multipart": "^9.0.3",
+    "@fastify/rate-limit": "^10.3.0",
+    "@fastify/static": "^8.2.0",
+    "@fastify/websocket": "^11.2.0",
+    "bcryptjs": "^3.0.2",
+    "fastify": "^5.4.0",
+    "jose": "^6.0.11",
+    "zod": "^4.1.0"
+  }
+}
